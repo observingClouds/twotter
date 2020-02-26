@@ -10,7 +10,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from mpl_toolkits.basemap import Basemap
+#from mpl_toolkits.basemap import Basemap
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -28,7 +28,7 @@ class Twotter:
         self.last_time = None
         self.plot_pos = None
         self.plot_wpt = None
-        self.blank_map = self._create_blank_map()
+        #self.blank_map = self._create_blank_map()
         self.map = None
         self.timestamp = dt.utcnow()
         self._load_config()
@@ -123,28 +123,28 @@ class Twotter:
         except IOError as e:
             raise Exception('Error: Unable to write JSON output: {}'.format(e))
 
-    def _create_blank_map(self):
-        # Lambert conformal basemap
-        # lat_1 is first standard parallel.
-        # lat_2 is second standard parallel (defaults to lat_1).
-        # lon_0,lat_0 is central point.
-        # rsphere=(6378137.00,6356752.3142) specifies WGS4 ellipsoid
-        # area_thresh=1000 means don't plot coastline features less
-        # than 1000 km^2 in area.
-        m = Basemap(width=5000000,
-                    height=5000000,
-                    rsphere=(6378137.00,6356752.3142),
-                    resolution='h',
-                    area_thresh=1000.,
-                    projection='lcc',
-                    lat_1=-67,
-                    lat_0=-70,
-                    lon_0=-68.)
-        # Draw parallels and meridians.
-        m.drawparallels(np.arange(-80.,81.,10.))
-        m.drawmeridians(np.arange(-180.,181.,20.))
-        m.shadedrelief()
-        return m
+#    def _create_blank_map(self):
+#        # Lambert conformal basemap
+#        # lat_1 is first standard parallel.
+#        # lat_2 is second standard parallel (defaults to lat_1).
+#        # lon_0,lat_0 is central point.
+#        # rsphere=(6378137.00,6356752.3142) specifies WGS4 ellipsoid
+#        # area_thresh=1000 means don't plot coastline features less
+#        # than 1000 km^2 in area.
+#        m = Basemap(width=5000000,
+#                    height=5000000,
+#                    rsphere=(6378137.00,6356752.3142),
+#                    resolution='h',
+#                    area_thresh=1000.,
+#                    projection='lcc',
+#                    lat_1=-67,
+#                    lat_0=-70,
+#                    lon_0=-68.)
+#        # Draw parallels and meridians.
+#        m.drawparallels(np.arange(-80.,81.,10.))
+#        m.drawmeridians(np.arange(-180.,181.,20.))
+#        m.shadedrelief()
+#        return m
 
     def _aircraft_symbol(self, angle):
         if (0 <= angle <= 45) or (315 < angle <= 360):
@@ -158,27 +158,27 @@ class Twotter:
         else:
             return 'o'
 
-    def plot_aircraft(self):
-        m = self.blank_map
-        # Draw aircraft
-        for k,v in self.last_pos.items():
-            try:
-                m.plot(v[6],
-                        v[5],
-                        marker=self._aircraft_symbol(v[9]),
-                        color=self.conf['aircraft'][k]['color'],
-                        markersize=5,
-                        label=k,
-                        latlon=True
-                        )
-            except TypeError:
-                pass #Skip any blank 'None' entries
-        # Draw waypoints
-        for point, pos in self.conf['waypoints'].items():
-            m.plot(pos['lon'], pos['lat'], color="black", marker=".", markersize=3, latlon=True)
-        plt.legend(loc=1, fontsize='small', numpoints=1, scatterpoints=1)
-        plt.title("BAS Air Unit - {0}".format(self.last_time.strftime('%Y-%m-%d %H:%M %Z')))
-        self.map = m
+#    def plot_aircraft(self):
+#        m = self.blank_map
+#        # Draw aircraft
+#        for k,v in self.last_pos.items():
+#            try:
+#                m.plot(v[6],
+#                        v[5],
+#                        marker=self._aircraft_symbol(v[9]),
+#                        color=self.conf['aircraft'][k]['color'],
+#                        markersize=5,
+#                        label=k,
+#                        latlon=True
+#                        )
+#            except TypeError:
+#                pass #Skip any blank 'None' entries
+#        # Draw waypoints
+#        for point, pos in self.conf['waypoints'].items():
+#            m.plot(pos['lon'], pos['lat'], color="black", marker=".", markersize=3, latlon=True)
+#        plt.legend(loc=1, fontsize='small', numpoints=1, scatterpoints=1)
+#        plt.title("BAS Air Unit - {0}".format(self.last_time.strftime('%Y-%m-%d %H:%M %Z')))
+#        self.map = m
 
     def save_plot(self):
         plt.savefig(self.conf['output']['img'], bbox_inches='tight', dpi=1200)
