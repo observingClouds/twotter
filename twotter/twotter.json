@@ -61,7 +61,7 @@
         "username": ""
     },
     "url": {
-        "auth": "http://www.websentinel.net/WebSentinel/j_security_check",
-        "api": "http://www.websentinel.net/WebSentinel/DataServlet",
-        "index": "http://www.websentinel.net/WebSentinel/index.jsp"}
+        "auth": "https://www.websentinel.net/WebSentinel/j_security_check",
+        "api": "https://www.websentinel.net/WebSentinel/DataServlet",
+        "index": "https://www.websentinel.net/WebSentinel/index.jsp"}
 }
